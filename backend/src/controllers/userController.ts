@@ -6,6 +6,7 @@ const userService = new UserService();
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
+    // ISSUE: Missing type validation for req.body
     const userData: CreateUserRequest = req.body;
     const user = await userService.createUser(userData);
 
@@ -17,6 +18,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json(response);
   } catch (error) {
+    // ISSUE: Using 'any' type instead of proper error typing
     const response: ApiResponse = {
       success: false,
       error: error instanceof Error ? error.message : 'Registration failed'

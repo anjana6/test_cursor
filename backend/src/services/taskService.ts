@@ -11,14 +11,17 @@ export class TaskService {
   async createTask(userId: number, taskData: CreateTaskRequest): Promise<Task> {
     const { title, description, priority, dueDate } = taskData;
 
+    // ISSUE: Missing type annotation for result
     const result = await run(
       'INSERT INTO tasks (title, description, priority, dueDate, userId) VALUES (?, ?, ?, ?, ?)',
       [title, description || null, priority, dueDate || null, userId]
     );
 
-    const taskId = (result as any).lastID;
+    // ISSUE: Unsafe type assertion and missing null check
+    const taskId = result.lastID;
     const newTask = await get('SELECT * FROM tasks WHERE id = ?', [taskId]);
 
+    // ISSUE: Missing null check before type assertion
     return newTask as Task;
   }
 
@@ -29,6 +32,7 @@ export class TaskService {
     offset?: number;
   }): Promise<Task[]> {
     let query = 'SELECT * FROM tasks WHERE userId = ?';
+    // ISSUE: Using 'any' type instead of proper typing
     const params: any[] = [userId];
 
     if (filters?.status) {
@@ -53,6 +57,7 @@ export class TaskService {
       params.push(filters.offset);
     }
 
+    // ISSUE: Missing type annotation and unsafe type assertion
     const tasks = await all(query, params);
     return tasks as Task[];
   }

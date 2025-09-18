@@ -18,7 +18,7 @@ export class UserService {
       throw new Error('User with this email already exists');
     }
 
-    // Hash password
+    // Hash password - ISSUE: Missing type annotation for saltRounds
     const saltRounds = parseInt(process.env.BCRYPT_ROUNDS || '12');
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -28,16 +28,18 @@ export class UserService {
       [email, hashedPassword, name]
     );
 
-    const userId = (result as any).lastID;
+    // ISSUE: Unsafe type assertion without proper type checking
+    const userId = result.lastID;
     const newUser = await get('SELECT id, email, name, createdAt, updatedAt FROM users WHERE id = ?', [userId]);
 
+    // ISSUE: Missing null check before type assertion
     return newUser as Omit<User, 'password'>;
   }
 
   async loginUser(loginData: LoginRequest): Promise<AuthResponse> {
     const { email, password } = loginData;
 
-    // Find user by email
+    // Find user by email - ISSUE: Unsafe type assertion
     const user = await get('SELECT * FROM users WHERE email = ?', [email]) as User;
     if (!user) {
       throw new Error('Invalid email or password');
@@ -55,8 +57,9 @@ export class UserService {
       throw new Error('JWT secret not configured');
     }
 
+    // ISSUE: Incorrect JWT payload type - should be more specific
     const token = jwt.sign(
-      { id: user.id, email: user.email, name: user.name },
+      { id: user.id, email: user.email, name: user.name, role: 'admin' }, // ISSUE: Adding extra property not in interface
       jwtSecret,
       { expiresIn: '24h' }
     );

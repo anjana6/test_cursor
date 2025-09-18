@@ -45,12 +45,14 @@ export const useTasks = (filters?: TaskFilters) => {
       const response = await apiService.createTask(taskData);
       
       if (response.success && response.data) {
+        // ISSUE: Using non-null assertion without proper checking
         setTasks(prev => [response.data!, ...prev]);
         await fetchStats(); // Refresh stats
       } else {
         throw new Error(response.error || 'Failed to create task');
       }
     } catch (err) {
+      // ISSUE: Missing proper error type handling
       setError(err instanceof Error ? err.message : 'Failed to create task');
       throw err;
     } finally {

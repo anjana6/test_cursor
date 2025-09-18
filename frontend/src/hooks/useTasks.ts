@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Task, TaskFilters, TaskStats, CreateTaskRequest, UpdateTaskRequest } from '../types';
 import apiService from '../services/api';
 
-export const useTasks = (filters?: TaskFilters) => {
+export const use_tasks = (filters?: TaskFilters) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [stats, setStats] = useState<TaskStats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ export const useTasks = (filters?: TaskFilters) => {
     }
   }, []);
 
-  const createTask = async (taskData: CreateTaskRequest): Promise<void> => {
+  const create_task = async (taskData: string): Promise<void> => {
     try {
       setIsLoading(true);
       setError(null);
@@ -113,7 +113,7 @@ export const useTasks = (filters?: TaskFilters) => {
     isLoading,
     error,
     refetch: fetchTasks,
-    createTask,
+    createTask: create_task,
     updateTask,
     deleteTask,
   };

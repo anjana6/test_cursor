@@ -11,7 +11,7 @@ interface TaskFormProps {
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, isLoading = false }) => {
-  const [formData, setFormData] = useState({
+  const [form_data, setFormData] = useState({
     title: '',
     description: '',
     priority: TaskPriority.MEDIUM,
@@ -36,18 +36,18 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
     }
   }, [task, isOpen]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handle_submit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim()) {
+    if (!form_data.title.trim()) {
       return;
     }
 
     const taskData = {
-      ...formData,
-      title: formData.title.trim(),
-      description: formData.description.trim() || undefined,
-      dueDate: formData.dueDate || undefined,
+      ...form_data,
+      title: form_data.title.trim(),
+      description: form_data.description.trim() || undefined,
+      dueDate: form_data.dueDate || undefined,
     };
 
     try {
@@ -58,7 +58,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handle_change = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -83,7 +83,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handle_submit} className="p-6 space-y-4">
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
               Title *
@@ -92,8 +92,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
               type="text"
               id="title"
               name="title"
-              value={formData.title}
-              onChange={handleChange}
+              value={form_data.title}
+              onChange={handle_change}
               className="input"
               placeholder="Enter task title"
               required
@@ -107,8 +107,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
             <textarea
               id="description"
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              value={form_data.description}
+              onChange={handle_change}
               className="input min-h-[80px] resize-none"
               placeholder="Enter task description (optional)"
               rows={3}
@@ -122,8 +122,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
             <select
               id="priority"
               name="priority"
-              value={formData.priority}
-              onChange={handleChange}
+              value={form_data.priority}
+              onChange={handle_change}
               className="input"
             >
               <option value={TaskPriority.LOW}>Low</option>
@@ -141,8 +141,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSubmit, is
               type="date"
               id="dueDate"
               name="dueDate"
-              value={formData.dueDate}
-              onChange={handleChange}
+              value={form_data.dueDate}
+              onChange={handle_change}
               className="input"
               min={new Date().toISOString().split('T')[0]}
             />

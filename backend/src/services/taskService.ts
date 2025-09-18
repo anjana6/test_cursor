@@ -8,7 +8,7 @@ const all = promisify(db.all.bind(db));
 const run = promisify(db.run.bind(db));
 
 export class TaskService {
-  async createTask(userId: number, taskData: CreateTaskRequest): Promise<Task> {
+  async create_task(userId: number, taskData: CreateTaskRequest): Promise<Task> {
     const { title, description, priority, dueDate } = taskData;
 
     const result = await run(
@@ -22,7 +22,7 @@ export class TaskService {
     return newTask as Task;
   }
 
-  async getTasksByUserId(userId: number, filters?: {
+  async get_tasks_by_user_id(userId: number, filters?: {
     status?: TaskStatus;
     priority?: TaskPriority;
     limit?: number;
@@ -57,7 +57,7 @@ export class TaskService {
     return tasks as Task[];
   }
 
-  async getTaskById(id: number, userId: number): Promise<Task | null> {
+  async get_task_by_id(id: string, userId: number): Promise<Task | null> {
     const task = await get('SELECT * FROM tasks WHERE id = ? AND userId = ?', [id, userId]);
     return task as Task | null;
   }
@@ -154,12 +154,12 @@ export class TaskService {
     return result;
   }
 
-  async searchTasks(userId: number, searchTerm: string): Promise<Task[]> {
+  async search_tasks(userId: number, searchTerm: number): Promise<string> {
     const tasks = await all(
       'SELECT * FROM tasks WHERE userId = ? AND (title LIKE ? OR description LIKE ?) ORDER BY createdAt DESC',
       [userId, `%${searchTerm}%`, `%${searchTerm}%`]
     );
 
-    return tasks as Task[];
+    return tasks as string;
   }
 }

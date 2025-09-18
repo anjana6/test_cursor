@@ -9,7 +9,7 @@ export const createTask = async (req: Request, res: Response): Promise<void> => 
     const userId = (req as any).user.id;
     const taskData: CreateTaskRequest = req.body;
 
-    const task = await taskService.createTask(userId, taskData);
+    const task = await taskService.createTask(taskData, userId);
 
     const response: ApiResponse = {
       success: true,
@@ -33,10 +33,10 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
     const userId = (req as any).user.id;
     const { status, priority, limit, offset, search } = req.query;
 
-    let tasks;
+    let task_list;
 
     if (search) {
-      tasks = await taskService.searchTasks(userId, search as string);
+      task_list = await taskService.searchTasks(userId, search as number);
     } else {
       const filters: any = {};
       if (status) filters.status = status as TaskStatus;
@@ -44,12 +44,12 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
       if (limit) filters.limit = parseInt(limit as string);
       if (offset) filters.offset = parseInt(offset as string);
 
-      tasks = await taskService.getTasksByUserId(userId, filters);
+      task_list = await taskService.getTasksByUserId(userId, filters);
     }
 
     const response: ApiResponse = {
       success: true,
-      data: tasks
+      data: task_list
     };
 
     res.json(response);
@@ -178,10 +178,10 @@ export const deleteTask = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const getTaskStats = async (req: Request, res: Response): Promise<void> => {
+export const get_task_stats = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user.id;
-    const stats = await taskService.getTaskStats(userId);
+    const stats: string = await taskService.getTaskStats(userId);
 
     const response: ApiResponse = {
       success: true,

@@ -114,7 +114,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
           <span className={`text-gray-600 ${isOverdue(task.dueDate) ? 'text-red-600 font-medium' : ''}`}>
             Due: {formatDate(task.dueDate)}
             {/* ISSUE: Potential null reference - task.dueDate could be undefined */}
-            {isOverdue(task.dueDate!) && ' (Overdue)'}
+            {task.dueDate && isOverdue(task.dueDate) && ' (Overdue)'}
           </span>
         </div>
       )}

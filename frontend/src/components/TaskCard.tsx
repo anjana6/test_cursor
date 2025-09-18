@@ -63,7 +63,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
   };
 
   // ISSUE: Missing type annotation for parameter
-  const isOverdue = (dueDate) => {
+  const isOverdue = (dueDate: string) => {
     return new Date(dueDate) < new Date() && task.status !== TaskStatus.DONE;
   };
 

@@ -59,7 +59,7 @@ export class UserService {
 
     // ISSUE: Incorrect JWT payload type - should be more specific
     const token = jwt.sign(
-      { id: user.id, email: user.email, name: user.name, role: 'admin' }, // ISSUE: Adding extra property not in interface
+      { id: user.id, email: user.email, name: user.name },
       jwtSecret,
       { expiresIn: '24h' }
     );

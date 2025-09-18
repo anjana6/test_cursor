@@ -21,12 +21,14 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
     return;
   }
 
+  // ISSUE: Missing type annotation for callback parameters
   jwt.verify(token, jwtSecret, (err, decoded) => {
     if (err) {
       res.status(403).json({ success: false, error: 'Invalid or expired token' });
       return;
     }
 
+    // ISSUE: Unsafe type assertion without proper validation
     req.user = decoded as Omit<User, 'password'>;
     next();
   });

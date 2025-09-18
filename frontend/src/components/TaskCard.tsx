@@ -62,6 +62,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
     }
   };
 
+  // ISSUE: Missing type annotation for parameter
   const isOverdue = (dueDate: string) => {
     return new Date(dueDate) < new Date() && task.status !== TaskStatus.DONE;
   };
@@ -112,7 +113,8 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
           <Calendar className="h-4 w-4 text-gray-400" />
           <span className={`text-gray-600 ${isOverdue(task.dueDate) ? 'text-red-600 font-medium' : ''}`}>
             Due: {formatDate(task.dueDate)}
-            {isOverdue(task.dueDate) && ' (Overdue)'}
+            {/* ISSUE: Potential null reference - task.dueDate could be undefined */}
+            {task.dueDate && isOverdue(task.dueDate) && ' (Overdue)'}
           </span>
         </div>
       )}

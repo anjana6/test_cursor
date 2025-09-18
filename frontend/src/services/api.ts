@@ -29,6 +29,7 @@ class ApiService {
       (config) => {
         const token = localStorage.getItem('token');
         if (token) {
+          // ISSUE: Missing type assertion for headers
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -92,9 +93,11 @@ class ApiService {
     if (filters?.status) params.append('status', filters.status);
     if (filters?.priority) params.append('priority', filters.priority);
     if (filters?.search) params.append('search', filters.search);
+    // ISSUE: Missing type checking for limit and offset
     if (filters?.limit) params.append('limit', filters.limit.toString());
     if (filters?.offset) params.append('offset', filters.offset.toString());
 
+    // ISSUE: Missing type annotation for response
     const response = await this.api.get(`/tasks?${params.toString()}`);
     return response.data;
   }

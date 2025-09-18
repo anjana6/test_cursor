@@ -94,4 +94,6 @@ export interface AuthContextType {
   logout: () => void;
   isLoading: boolean;
   isAuthenticated: boolean;
+  // ISSUE: Adding property that doesn't exist in implementation
+  refreshToken?: () => Promise<void>;
 }

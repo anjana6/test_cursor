@@ -24,6 +24,7 @@ const TasksPage: React.FC = () => {
       await createTask(taskData);
       toast.success('Task created successfully!');
     } catch (error) {
+      // ISSUE: Missing proper error type handling
       toast.error('Failed to create task');
     }
   };
@@ -77,6 +78,7 @@ const TasksPage: React.FC = () => {
     const matchesStatus = !statusFilter || task.status === statusFilter;
     const matchesPriority = !priorityFilter || task.priority === priorityFilter;
     
+    // ISSUE: Missing return type annotation for filter function
     return matchesSearch && matchesStatus && matchesPriority;
   });
 

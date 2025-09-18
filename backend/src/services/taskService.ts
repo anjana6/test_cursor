@@ -33,7 +33,7 @@ export class TaskService {
   }): Promise<Task[]> {
     let query = 'SELECT * FROM tasks WHERE userId = ?';
     // ISSUE: Using 'any' type instead of proper typing
-    const params: any[] = [userId];
+    const params: (string | number | null)[] = [userId];
 
     if (filters?.status) {
       query += ' AND status = ?';
